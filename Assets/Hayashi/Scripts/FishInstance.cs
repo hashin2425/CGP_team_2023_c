@@ -8,15 +8,19 @@ public class FishInstance : MonoBehaviour
 {
     public float rotationSpeed = 10f;
     public float moveSpeed = 1.0f;
+    public GameObject ripple;
 
     private Rigidbody2D rb;
     private System.Random random = new System.Random();
     private float moving_target_X = 0;
     private float moving_target_Y = 0;
-    private string moving_status = "wait";
-    private float rotate_stop = 0.25f;
-    private float move_stop = 0.5f;
+    private string movingStatus = "wait";
+    private float degStopRotation = 0.25f;
+    private float distanceStopMoveing = 0.5f;
+    private float dictanceShowRipple = 8.0f;
     private Vector2 direction;
+
+    public void Catched() { }
 
     bool is_in_frame()
     {
@@ -38,30 +42,34 @@ public class FishInstance : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (moving_status == "wait")
+        if (movingStatus == "wait")
         {
             moving_target_X = random.Next(-10, 10) * 0.75f;
             moving_target_Y = random.Next(-10, 10) * 0.75f;
-            moving_status = "rotate";
+            movingStatus = "rotate";
         }
-        if (moving_status == "rotate")
+        if (movingStatus == "rotate")
         {
             direction = new Vector2(moving_target_X, moving_target_Y) - (Vector2)transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
-            if (Quaternion.Angle(transform.rotation, rotation) < rotate_stop)
+            if (Quaternion.Angle(transform.rotation, rotation) < degStopRotation)
             {
-                moving_status = "swim";
+                movingStatus = "swim";
+                if (Vector2.Distance(transform.position, new Vector2(moving_target_X, moving_target_Y)) > dictanceShowRipple)
+                {
+                    Instantiate(ripple, transform.position, Quaternion.identity);
+                }
             }
         }
-        if (moving_status == "swim")
+        if (movingStatus == "swim")
         {
             rb.velocity = new Vector2(moving_target_X, moving_target_Y) - (Vector2)transform.position;
-            if (Vector2.Distance(transform.position, new Vector2(moving_target_X, moving_target_Y)) < move_stop)
+            if (Vector2.Distance(transform.position, new Vector2(moving_target_X, moving_target_Y)) < distanceStopMoveing)
             {
                 rb.velocity = Vector2.zero;
-                moving_status = "wait";
+                movingStatus = "wait";
             }
         }
     }
