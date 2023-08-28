@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 public class SpawnFish : MonoBehaviour
 {
     public GameObject fish;
+    public int maxFishNum = 100; //最大金魚数
+
+    public Transform[] spawnPoints;
 
     void FixedUpdate()
     {
-        if (GameObject.FindGameObjectsWithTag("Fish").Length < 5)
+        if (GameObject.FindGameObjectsWithTag("Fish").Length < maxFishNum)
         {
-            for (int i = 0; i < 15; i++)
-            {
-                Instantiate(fish, transform.position, Quaternion.identity);
-            }
+            int randomSpawnIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
+            Vector3 spawnPosition = spawnPoints[randomSpawnIndex].position;
+            GameObject newFish = Instantiate(fish, spawnPosition, Quaternion.identity);
         }
     }
 }
