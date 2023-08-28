@@ -9,8 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6810261926955660182}
-  - component: {fileID: 9134192810615727923}
-  - component: {fileID: 4814287564143086410}
+  - component: {fileID: 4917129983032785806}
+  - component: {fileID: 4419910220119256850}
+  - component: {fileID: 4700131366397129622}
+  - component: {fileID: 7272711684207454920}
   m_Layer: 0
   m_Name: FishInstance
   m_TagString: Fish
@@ -26,15 +28,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4871586109832212869}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.72417194, w: 0.68961954}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 938035118430459145}
+  m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -92.8}
---- !u!114 &9134192810615727923
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4917129983032785806
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49,7 +50,9 @@ MonoBehaviour:
   rotationSpeed: 7
   moveSpeed: 0.7
   ripple: {fileID: 8206770884389870043, guid: 7cd587a9a6dd19f4e93a70b681e860f9, type: 3}
---- !u!50 &4814287564143086410
+  catcherName: Catcher
+  isCaught: 0
+--- !u!50 &4419910220119256850
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -76,46 +79,13 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!1 &8456290144176019806
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 938035118430459145}
-  - component: {fileID: 5161851879463452716}
-  - component: {fileID: 6931344718014736440}
-  m_Layer: 0
-  m_Name: fish_temp
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &938035118430459145
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8456290144176019806}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6810261926955660182}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5161851879463452716
+--- !u!212 &4700131366397129622
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8456290144176019806}
+  m_GameObject: {fileID: 4871586109832212869}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -150,7 +120,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 59132e1f987f05f4d81a3f2254343da4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3e52967e49d20304b97e99bcb9406a7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -161,13 +131,13 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &6931344718014736440
+--- !u!60 &7272711684207454920
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8456290144176019806}
+  m_GameObject: {fileID: 4871586109832212869}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -197,7 +167,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.31, y: 1.64}
+    oldSize: {x: 11.57, y: 4.56}
     newSize: {x: 1.31, y: 1.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -206,24 +176,21 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0.445, y: -0.14999999}
-      - {x: 0.57951134, y: -0.058635868}
-      - {x: 0.6136507, y: -0.04241083}
+      - {x: 0.615, y: -0.07}
       - {x: 0.645, y: 0}
-      - {x: 0.6297375, y: 0.03469817}
-      - {x: 0.6112185, y: 0.051504828}
-      - {x: 0.3086338, y: 0.14741497}
-      - {x: -0.0066812634, y: 0.14124304}
-      - {x: -0.21327397, y: 0.047612064}
-      - {x: -0.37583175, y: 0.1510851}
-      - {x: -0.45824337, y: 0.18145621}
+      - {x: 0.645, y: 0.049999997}
+      - {x: 0.625, y: 0.08}
+      - {x: 0.305, y: 0.17}
+      - {x: -0.035, y: 0.14999999}
+      - {x: -0.225, y: 0.08}
+      - {x: -0.375, y: 0.16}
+      - {x: -0.465, y: 0.19}
       - {x: -0.60499996, y: 0.19}
-      - {x: -0.58930564, y: 0.084158175}
-      - {x: -0.5614274, y: 0.0025963187}
-      - {x: -0.6056494, y: -0.06466431}
+      - {x: -0.625, y: 0.089999996}
       - {x: -0.625, y: -0.16}
       - {x: -0.575, y: -0.17999999}
       - {x: -0.415, y: -0.17999999}
-      - {x: -0.233556, y: -0.12109707}
+      - {x: -0.305, y: -0.16}
       - {x: -0.085, y: -0.17999999}
       - {x: 0.325, y: -0.17999999}
   m_UseDelaunayMesh: 0
