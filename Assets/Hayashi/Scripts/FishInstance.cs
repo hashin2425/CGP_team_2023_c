@@ -10,7 +10,7 @@ public class FishInstance : MonoBehaviour
     public float rotationSpeed = 10f;
     public float moveSpeed = 1.0f;
     public GameObject ripple;
-    public string catcherName="Catcher";
+    public string catcherName = "Catcher";
 
     private Rigidbody2D rb;
     private System.Random random = new System.Random();
@@ -27,7 +27,7 @@ public class FishInstance : MonoBehaviour
 
     bool is_in_frame()
     {
-        if (transform.position.x > 8 || transform.position.x < -8 || transform.position.y > 6 || transform.position.y < -6)
+        if (transform.position.x > 12 || transform.position.x < -12 || transform.position.y > 10 || transform.position.y < -10)
         {
             return false;
         }

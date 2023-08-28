@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class CatcherScript : MonoBehaviour
 {
-    private Vector3 offset;
+    private Vector3 mousePos, worldPos;
     private SpriteRenderer spriteRenderer;
 
     void Start()
     {
-        offset = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f)) - transform.position;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void FixedUpdate()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-        transform.position = mousePosition - offset;
+        //マウス座標の取得
+        mousePos = Input.mousePosition;
+        //スクリーン座標をワールド座標に変換
+        worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 10f));
+        worldPos.z = 0.01f;
+        //ワールド座標を自身の座標に設定
+        transform.position = worldPos;
         if (Input.GetMouseButton(0))
         {
             // クリックされている場合、色を緑にする
