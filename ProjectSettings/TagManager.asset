@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Fish
+  - Catcher
+  - Catcher_sunk
   layers:
   - Default
   - TransparentFX
