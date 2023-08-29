@@ -13,6 +13,6 @@ public class TimeManagement : MonoBehaviour
     void FixedUpdate()
     {
         this.time -= Time.deltaTime;
-        this.timerText.text = this.time.ToString("F1");
+        this.timerText.text = "Time:" + this.time.ToString("F1") + " " + "Fish:" + GameObject.FindGameObjectsWithTag("CaughtFish").Length;
     }
 }

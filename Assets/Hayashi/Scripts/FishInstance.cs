@@ -11,6 +11,7 @@ public class FishInstance : MonoBehaviour
     public float moveSpeed = 1.0f;
     public GameObject ripple;
     public string catcherName = "Catcher";
+    public string bucketName = "Bucket";
 
     private Rigidbody2D rb;
     private System.Random random = new System.Random();
@@ -23,7 +24,9 @@ public class FishInstance : MonoBehaviour
     private Vector2 direction;
     public bool isCaught = false;
     private GameObject catcher;
+    private GameObject bucket;
     private Vector3 catcherLastPosition = Vector2.zero;
+    private bool isInBucket = false;
 
     bool is_in_frame()
     {
@@ -36,12 +39,24 @@ public class FishInstance : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        // 接触中は毎フレーム呼び出されるため、負荷の大きな処理を行わない
-        if (collision.gameObject.tag == "Catcher_sunk")
+        // Do not run heavy calculations in OnTriggerStay2D, as it is called every frame
+        if (collision.gameObject.tag == "Catcher_sunk" && !isInBucket)
         {
             isCaught = true;
         }
+        if (collision.gameObject.tag == "Bucket" && isCaught)
+        {
+            Console.WriteLine("Fish in bucket");
+            isInBucket = true;
+            isCaught = false;
 
+            // Move fish in front of bucket(change its x position)
+            Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, -0.1f);
+            transform.position = newPosition;
+
+            // omit tag
+            gameObject.tag = "CaughtFish";
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -58,6 +73,7 @@ public class FishInstance : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         catcher = GameObject.Find(catcherName);
+        bucket = GameObject.Find(bucketName);
     }
 
     private void FixedUpdate()
@@ -84,8 +100,24 @@ public class FishInstance : MonoBehaviour
             }
             if (movingStatus == "wait")
             {
-                moving_target_X = random.Next(-10, 10) * 0.75f;
-                moving_target_Y = random.Next(-10, 10) * 0.75f;
+                if (isInBucket)
+                {
+                    Collider2D bucketCollider = bucket.GetComponent<Collider2D>();
+                    Bounds colliderBounds = bucketCollider.bounds;
+                    Vector2 randomPosition;
+                    do
+                    {
+                        moving_target_X = random.Next((int)colliderBounds.min.x, (int)colliderBounds.max.x);
+                        moving_target_Y = random.Next((int)colliderBounds.min.y, (int)colliderBounds.max.y);
+                        randomPosition = new Vector2(moving_target_X, moving_target_Y);
+                    } while (!bucketCollider.OverlapPoint(randomPosition));
+
+                }
+                else
+                {
+                    moving_target_X = random.Next(-10, 10) * 0.75f;
+                    moving_target_Y = random.Next(-10, 10) * 0.75f;
+                }
                 movingStatus = "rotate";
             }
             if (movingStatus == "rotate")
