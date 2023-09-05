@@ -5,9 +5,10 @@ using TMPro;
 
 public class GameDirector : MonoBehaviour
 {
-    GameObject timerText;
-    GameObject lifeText;
-    float time = 60.0f;
+    public GameObject timerText;
+    public GameObject lifeText;
+    public GameObject pointText;
+    public float time = 60.0f;
     int point = 0;
 
     public void BreackPoi()
@@ -18,8 +19,7 @@ public class GameDirector : MonoBehaviour
 
     void Start()
     {
-        this.timerText = GameObject.Find("Time");
-        this.pointText = GameObject.Find("Life");
+        
     }
 
     void Update()
