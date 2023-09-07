@@ -9,6 +9,7 @@ TagManager:
   - Catcher_sunk
   - Bucket
   - CaughtFish
+  - ShootItem
   layers:
   - Default
   - TransparentFX

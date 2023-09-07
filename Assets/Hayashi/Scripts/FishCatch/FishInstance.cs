@@ -24,7 +24,8 @@ public class FishInstance : MonoBehaviour
     private Vector2 direction;
     public bool isCaught = false;
     private GameObject catcher;
-    private GameObject bucket;
+    private Bounds bucketBounds;
+    private Collider2D bucketCollider;
     private Vector3 catcherLastPosition = Vector2.zero;
     private bool isInBucket = false;
 
@@ -43,6 +44,7 @@ public class FishInstance : MonoBehaviour
         if (collision.gameObject.tag == "Catcher_sunk" && !isInBucket)
         {
             isCaught = true;
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.5f);
         }
         if (collision.gameObject.tag == "Bucket" && isCaught)
         {
@@ -73,7 +75,10 @@ public class FishInstance : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         catcher = GameObject.Find(catcherName);
-        bucket = GameObject.Find(bucketName);
+        GameObject bucket = GameObject.Find(bucketName);
+        bucketCollider = bucket.GetComponent<Collider2D>();
+        bucketBounds = bucketCollider.bounds;
+
     }
 
     private void FixedUpdate()
@@ -102,16 +107,13 @@ public class FishInstance : MonoBehaviour
             {
                 if (isInBucket)
                 {
-                    Collider2D bucketCollider = bucket.GetComponent<Collider2D>();
-                    Bounds colliderBounds = bucketCollider.bounds;
                     Vector2 randomPosition;
                     do
                     {
-                        moving_target_X = random.Next((int)colliderBounds.min.x, (int)colliderBounds.max.x);
-                        moving_target_Y = random.Next((int)colliderBounds.min.y, (int)colliderBounds.max.y);
+                        moving_target_X = random.Next((int)bucketBounds.min.x, (int)bucketBounds.max.x);
+                        moving_target_Y = random.Next((int)bucketBounds.min.y, (int)bucketBounds.max.y);
                         randomPosition = new Vector2(moving_target_X, moving_target_Y);
                     } while (!bucketCollider.OverlapPoint(randomPosition));
-
                 }
                 else
                 {
