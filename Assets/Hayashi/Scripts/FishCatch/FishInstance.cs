@@ -11,6 +11,7 @@ public class FishInstance : MonoBehaviour
     public float moveSpeed = 1.0f;
     public GameObject ripple;
     public string catcherName = "Catcher";
+    public string bucketName = "Bucket";
 
     private Rigidbody2D rb;
     private System.Random random = new System.Random();
@@ -23,7 +24,10 @@ public class FishInstance : MonoBehaviour
     private Vector2 direction;
     public bool isCaught = false;
     private GameObject catcher;
+    private Bounds bucketBounds;
+    private Collider2D bucketCollider;
     private Vector3 catcherLastPosition = Vector2.zero;
+    private bool isInBucket = false;
 
     bool is_in_frame()
     {
@@ -36,12 +40,28 @@ public class FishInstance : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        // 接触中は毎フレーム呼び出されるため、負荷の大きな処理を行わない
-        if (collision.gameObject.tag == "Catcher_sunk")
+        // Do not run heavy calculations in OnTriggerStay2D, as it is called every frame
+        if (collision.gameObject.tag == "Catcher_sunk" && !isInBucket)
         {
             isCaught = true;
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.5f);
         }
+        if (collision.gameObject.tag == "Bucket" && isCaught)
+        {
+            Console.WriteLine("Fish in bucket");
+            isInBucket = true;
+            isCaught = false;
 
+            // disable collider to improve performance
+            gameObject.GetComponent<Collider2D>().enabled = false;
+
+            // Move fish in front of bucket(change its x position)
+            Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, -0.1f);
+            transform.position = newPosition;
+
+            // omit tag
+            gameObject.tag = "CaughtFish";
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -58,12 +78,17 @@ public class FishInstance : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         catcher = GameObject.Find(catcherName);
+        GameObject bucket = GameObject.Find(bucketName);
+        bucketCollider = bucket.GetComponent<Collider2D>();
+        bucketBounds = bucketCollider.bounds;
+
     }
 
     private void FixedUpdate()
     {
         if (isCaught)
         {
+            // when it is on catcher
             if (catcherLastPosition == Vector3.zero)
             {
                 catcherLastPosition = catcher.transform.position;
@@ -84,8 +109,22 @@ public class FishInstance : MonoBehaviour
             }
             if (movingStatus == "wait")
             {
-                moving_target_X = random.Next(-10, 10) * 0.75f;
-                moving_target_Y = random.Next(-10, 10) * 0.75f;
+                if (isInBucket)
+                {
+                    // when it is in bucket, move randomly in bucket
+                    Vector2 randomPosition;
+                    do
+                    {
+                        moving_target_X = random.Next((int)bucketBounds.min.x, (int)bucketBounds.max.x);
+                        moving_target_Y = random.Next((int)bucketBounds.min.y, (int)bucketBounds.max.y);
+                        randomPosition = new Vector2(moving_target_X, moving_target_Y);
+                    } while (!bucketCollider.OverlapPoint(randomPosition));
+                }
+                else
+                {
+                    moving_target_X = random.Next(-10, 10) * 0.75f;
+                    moving_target_Y = random.Next(-10, 10) * 0.75f;
+                }
                 movingStatus = "rotate";
             }
             if (movingStatus == "rotate")
