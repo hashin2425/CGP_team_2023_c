@@ -52,6 +52,9 @@ public class FishInstance : MonoBehaviour
             isInBucket = true;
             isCaught = false;
 
+            // disable collider to improve performance
+            gameObject.GetComponent<Collider2D>().enabled = false;
+
             // Move fish in front of bucket(change its x position)
             Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, -0.1f);
             transform.position = newPosition;
