@@ -88,6 +88,7 @@ public class FishInstance : MonoBehaviour
     {
         if (isCaught)
         {
+            // when it is on catcher
             if (catcherLastPosition == Vector3.zero)
             {
                 catcherLastPosition = catcher.transform.position;
@@ -110,6 +111,7 @@ public class FishInstance : MonoBehaviour
             {
                 if (isInBucket)
                 {
+                    // when it is in bucket, move randomly in bucket
                     Vector2 randomPosition;
                     do
                     {
