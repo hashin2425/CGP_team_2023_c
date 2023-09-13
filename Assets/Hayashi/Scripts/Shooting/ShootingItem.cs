@@ -8,10 +8,11 @@ public class ShootingItem : MonoBehaviour
     public int[] childrenPoints;
     public bool isThrown = true;
     public GameObject destroyParticle;
+    public int currentPoint;
+
 
     private float thrownSpeed = 7.5f;
     private float slideSpeed = 7.5f;
-    private int currentPoint;
     private GameObject currentSkin;
     private Rigidbody2D rb;
 

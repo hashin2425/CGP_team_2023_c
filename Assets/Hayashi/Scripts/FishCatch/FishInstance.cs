@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using static UnityEngine.GraphicsBuffer;
 using UnityEditorInternal;
+using TMPro;
 
 public class FishInstance : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class FishInstance : MonoBehaviour
     public GameObject ripple;
     public string catcherName = "Catcher";
     public string bucketName = "Bucket";
+    public bool isCaught = false;
 
     private Rigidbody2D rb;
     private System.Random random = new System.Random();
@@ -22,7 +24,6 @@ public class FishInstance : MonoBehaviour
     private float distanceStopMoving = 0.5f;
     private float distanceShowRipple = 8.0f;
     private Vector2 direction;
-    public bool isCaught = false;
     private GameObject catcher;
     private Bounds bucketBounds;
     private Collider2D bucketCollider;
@@ -48,7 +49,6 @@ public class FishInstance : MonoBehaviour
         }
         if (collision.gameObject.tag == "Bucket" && isCaught)
         {
-            Console.WriteLine("Fish in bucket");
             isInBucket = true;
             isCaught = false;
 
@@ -56,7 +56,7 @@ public class FishInstance : MonoBehaviour
             gameObject.GetComponent<Collider2D>().enabled = false;
 
             // Move fish in front of bucket(change its x position)
-            Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, -0.1f);
+            Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, -0.5f);
             transform.position = newPosition;
 
             // omit tag
@@ -81,7 +81,6 @@ public class FishInstance : MonoBehaviour
         GameObject bucket = GameObject.Find(bucketName);
         bucketCollider = bucket.GetComponent<Collider2D>();
         bucketBounds = bucketCollider.bounds;
-
     }
 
     private void FixedUpdate()

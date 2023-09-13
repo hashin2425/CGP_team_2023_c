@@ -8,12 +8,11 @@ public class TimeManagement : MonoBehaviour
 {
     // Start is called before the first frame update
     public TextMeshProUGUI timerText;
-    public float timeLeft = 2.0f;
+    public float timeLeft = 60.0f;
     public Rigidbody2D whiteObjectRigidbody;
     public Transform whiteObjectTransform;
     public Rigidbody2D popupObjectRigidbody;
     public Transform popupObjectTransform;
-    public GameObject catcher;
 
     private float ObjectGoalY = 0;
     private float whiteObjectSpeed = 16f;
@@ -26,7 +25,7 @@ public class TimeManagement : MonoBehaviour
         if (timeLeft >= 0)
         {
             timeLeft -= Time.deltaTime;
-            timerText.text = "Time:" + timeLeft.ToString("F1") + " " + "Fish:" + GameObject.FindGameObjectsWithTag("CaughtFish").Length;
+            timerText.text = timeLeft.ToString("F1");
         }
         else
         {
@@ -58,7 +57,6 @@ public class TimeManagement : MonoBehaviour
                 popupObjectVec.z = -9.5f;
                 popupObjectRigidbody.velocity = popupObjectVec;
             }
-            // Time.timeScale = 0.25f;
         }
     }
 }

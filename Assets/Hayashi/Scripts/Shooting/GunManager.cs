@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GunManager : MonoBehaviour
@@ -12,19 +13,25 @@ public class GunManager : MonoBehaviour
     public float bulletSpeed = 10f;
     public float rotateAdjustmentDegree = 180f; // if gun image is needed to be rotated, set this value to 90f
     public float shootInterval = 0.5f;
+    public TextMeshProUGUI bulletLeftText;
+    public TextMeshProUGUI pointText;
+    public TimeManagement timeManagement;
 
     private float passedTimeLastShoot = 0;
+    private int playerScore = 0;
     private CircleCollider2D reticleCollider;
 
     void Start()
     {
         reticleCollider = Reticle.GetComponent<CircleCollider2D>();
-
-        // Time.timeScale = 0.1f;
     }
 
     void FixedUpdate()
     {
+        if (timeManagement.timeLeft <= 0)
+        {
+            return;
+        }
         Vector3 gunAnchorPos = GunAnchor.transform.position;
         Vector3 reticlePos = Reticle.transform.position;
 
@@ -52,11 +59,18 @@ public class GunManager : MonoBehaviour
             Collider2D[] colliders = Physics2D.OverlapCircleAll(reticlePos, reticleCollider.radius);
             foreach (var collider in colliders)
             {
-                // Note: The parents object of child which has a collider have ShootingItem script.
-                if (collider.gameObject.transform.parent.tag == "ShootItem")
+                if (collider != null && collider.gameObject.transform.parent != null)
                 {
-                    ShootingItem shootingItem = collider.gameObject.transform.parent.GetComponent<ShootingItem>();
-                    shootingItem.destroyMySelf();
+                    // Note: The parents object of child which has a collider have ShootingItem script.
+                    if (collider.gameObject.transform.parent.tag == "ShootItem")
+                    {
+                        ShootingItem shootingItem = collider.gameObject.transform.parent.GetComponent<ShootingItem>();
+                        if (shootingItem != null)
+                        {
+                            shootingItem.destroyMySelf();
+                            playerScore += shootingItem.currentPoint;
+                        }
+                    }
                 }
             }
 
@@ -66,5 +80,9 @@ public class GunManager : MonoBehaviour
             passedTimeLastShoot = 0;
             bulletCount--;
         }
+
+        // update UI
+        pointText.text = playerScore.ToString();
+        bulletLeftText.text = bulletCount.ToString();
     }
 }
