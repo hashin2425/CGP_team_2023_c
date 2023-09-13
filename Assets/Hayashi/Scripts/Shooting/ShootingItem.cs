@@ -38,7 +38,6 @@ public class ShootingItem : MonoBehaviour
         currentSkin = childrenSkins[index];
 
         currentSkin.SetActive(true);
-        // currentSkin.GetComponent<PolygonCollider2D>().isTrigger = false;
 
         if (isThrown)
         {
@@ -46,20 +45,23 @@ public class ShootingItem : MonoBehaviour
         }
         else
         {
+            currentSkin.GetComponent<PolygonCollider2D>().isTrigger = false;
             rb.velocity = new Vector2(Mathf.Abs(gameObject.transform.position.x) / gameObject.transform.position.x * slideSpeed * -1, 0);
+            rb.gravityScale = 0;
+            rb.bodyType = RigidbodyType2D.Kinematic;
         }
     }
 
     bool is_in_frame()
     {
-        if (transform.position.x > 12 || transform.position.x < -12 || transform.position.y > 10 || transform.position.y < -10)
+        if (transform.position.x > 20 || transform.position.x < -20 || transform.position.y > 16 || transform.position.y < -16)
         {
             return false;
         }
         return true;
     }
 
-    void destroyMySelf()
+    public void destroyMySelf()
     {
         GameObject newDestroyParticle = Instantiate(destroyParticle, transform.position, Quaternion.identity);
         Destroy(newDestroyParticle, 0.5f);
@@ -71,16 +73,6 @@ public class ShootingItem : MonoBehaviour
         if (!is_in_frame())
         {
             destroyMySelf();
-        }
-
-        if (true || Input.GetMouseButtonDown(0))
-        {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            if (currentSkin.GetComponent<PolygonCollider2D>().OverlapPoint(mousePos))
-            {
-                destroyMySelf();
-            }
         }
     }
 }

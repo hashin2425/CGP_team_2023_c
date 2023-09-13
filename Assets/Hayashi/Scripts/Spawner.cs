@@ -18,7 +18,10 @@ public class Spawner : MonoBehaviour
         List<Transform> spawnPointsList = new List<Transform>();
         foreach (Transform child in transform)
         {
-            spawnPointsList.Add(child.transform);
+            if (child.gameObject.activeInHierarchy)
+            {
+                spawnPointsList.Add(child.transform);
+            }
         }
         spawnPoints = spawnPointsList.ToArray();
     }
