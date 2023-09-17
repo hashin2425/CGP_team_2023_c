@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.EventSystems;
 public class MenuSelecter : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -16,9 +16,10 @@ public class MenuSelecter : MonoBehaviour
     {
         
     }
-    private void OnMouseDown()
+    public void MoveScene()
     {
         // シーン遷移
+        Debug.Log("click");
         SceneManager.LoadScene(SceneName);
     }
 }
