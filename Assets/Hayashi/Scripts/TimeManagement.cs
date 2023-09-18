@@ -13,7 +13,10 @@ public class TimeManagement : MonoBehaviour
     public Transform whiteObjectTransform;
     public Rigidbody2D popupObjectRigidbody;
     public Transform popupObjectTransform;
+    public bool isGameEnd;
+    public AudioClip seGameEnd;
 
+    private bool isPlayedGameEndSE = false;
     private float ObjectGoalY = 0;
     private float whiteObjectSpeed = 16f;
     private float popupObjectSpeed = 8f;
@@ -22,13 +25,18 @@ public class TimeManagement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (timeLeft >= 0)
+        if (!isGameEnd && timeLeft >= 0)
         {
             timeLeft -= Time.deltaTime;
             timerText.text = timeLeft.ToString("F1");
         }
         else
         {
+            if (!isPlayedGameEndSE)
+            {
+                gameObject.GetComponent<AudioSource>().PlayOneShot(seGameEnd, 0.4f);
+                isPlayedGameEndSE = true;
+            }
             if (whiteObjectTransform.position.y <= ObjectGoalY)
             {
                 whiteObjectRigidbody.velocity = Vector3.zero;
