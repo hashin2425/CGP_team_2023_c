@@ -4,8 +4,8 @@ public class RippleScript : MonoBehaviour
 {
     [SerializeField] private LineRenderer m_lineRenderer = null;
     [SerializeField] private float m_radius = 1;
-    [SerializeField] private float m_initialLineWidth = 0.05f; // ‰Šú‚Ìü‚Ì‘¾‚³
-    [SerializeField] private float m_finalLineWidth = 0; // ÅI“I‚Èü‚Ì‘¾‚³
+    [SerializeField] private float m_initialLineWidth = 0.05f; // ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½Ì‘ï¿½ï¿½ï¿½
+    [SerializeField] private float m_finalLineWidth = 0; // ï¿½ÅIï¿½Iï¿½Èï¿½ï¿½Ì‘ï¿½ï¿½ï¿½
 
     [SerializeField] private float m_duration = 2;
     [SerializeField] private float m_from = 0;
@@ -29,7 +29,7 @@ public class RippleScript : MonoBehaviour
 
         var amount = m_elapsedTime / m_duration;
         var scale = Mathf.Lerp(m_from, m_to, amount);
-        var lineWidth = Mathf.Lerp(m_initialLineWidth, m_finalLineWidth, amount); // ü‚Ì‘¾‚³‚à‰‰o
+        var lineWidth = Mathf.Lerp(m_initialLineWidth, m_finalLineWidth, amount); // ï¿½ï¿½ï¿½Ì‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½o
 
         transform.localScale = new Vector3(scale, scale, 1);
         m_lineRenderer.startWidth = lineWidth;

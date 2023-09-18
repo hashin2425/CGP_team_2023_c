@@ -13,7 +13,9 @@ public class FishInstance : MonoBehaviour
     public GameObject ripple;
     public string catcherName = "Catcher";
     public string bucketName = "Bucket";
-    public bool isCaught = false;
+    public bool isCaughtByCatcher = false;
+    public Sprite[] fishSprites;
+    public AudioClip seIntoBucket;
 
     private Rigidbody2D rb;
     private System.Random random = new System.Random();
@@ -28,7 +30,8 @@ public class FishInstance : MonoBehaviour
     private Bounds bucketBounds;
     private Collider2D bucketCollider;
     private Vector3 catcherLastPosition = Vector2.zero;
-    private bool isInBucket = false;
+    private bool isCaughtInBucket = false;
+    private bool isExistOnCatcher = false;
 
     bool is_in_frame()
     {
@@ -39,18 +42,34 @@ public class FishInstance : MonoBehaviour
         return true;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    public void OnCatcherLiftedOutWater()
     {
-        // Do not run heavy calculations in OnTriggerStay2D, as it is called every frame
-        if (collision.gameObject.tag == "Catcher_sunk" && !isInBucket)
+        if (isExistOnCatcher)
         {
-            isCaught = true;
+            isCaughtByCatcher = true;
             gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.5f);
         }
-        if (collision.gameObject.tag == "Bucket" && isCaught)
+    }
+
+    public void OnCatcherIntoWater()
+    {
+        isCaughtByCatcher = false;
+        gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0.0f);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Do not run heavy calculations in OnTriggerStay2D, as it is called every frame
+        if ((collision.gameObject.tag == "Catcher_sunk" || collision.gameObject.tag == "Catcher") && !isCaughtInBucket)
         {
-            isInBucket = true;
-            isCaught = false;
+            isExistOnCatcher = true;
+        }
+        if (collision.gameObject.tag == "Bucket" && isCaughtByCatcher)
+        {
+            isCaughtInBucket = true;
+            isCaughtByCatcher = false;
+
+            gameObject.GetComponent<AudioSource>().PlayOneShot(seIntoBucket, 0.5f);
 
             // disable collider to improve performance
             gameObject.GetComponent<Collider2D>().enabled = false;
@@ -68,7 +87,7 @@ public class FishInstance : MonoBehaviour
     {
         if (collision.gameObject.tag == "Catcher" || collision.gameObject.tag == "Catcher_sunk")
         {
-            isCaught = false;
+            isExistOnCatcher = false;
         }
 
     }
@@ -81,11 +100,14 @@ public class FishInstance : MonoBehaviour
         GameObject bucket = GameObject.Find(bucketName);
         bucketCollider = bucket.GetComponent<Collider2D>();
         bucketBounds = bucketCollider.bounds;
+
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = fishSprites[random.Next(fishSprites.Length)];
     }
 
     private void FixedUpdate()
     {
-        if (isCaught)
+        if (isCaughtByCatcher)
         {
             // when it is on catcher
             if (catcherLastPosition == Vector3.zero)
@@ -108,7 +130,7 @@ public class FishInstance : MonoBehaviour
             }
             if (movingStatus == "wait")
             {
-                if (isInBucket)
+                if (isCaughtInBucket)
                 {
                     // when it is in bucket, move randomly in bucket
                     Vector2 randomPosition;
