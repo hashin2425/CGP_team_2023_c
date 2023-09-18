@@ -5,20 +5,29 @@ using TMPro;
 
 public class GameDirector : MonoBehaviour
 {
-    // Start is called before the first frame update
-    GameObject timerText;
-    float time = 60.0f;
+    public GameObject timerText;
+    public GameObject lifeText;
+    public GameObject pointText;
+    public float time = 60.0f;
+    int point = 0;
+
+    public void BreackPoi()
+    {
+        this.point /= 1;
+    }
+
 
     void Start()
     {
-        this.timerText = GameObject.Find("Time");
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
         this.time -= Time.deltaTime;
         this.timerText.GetComponent<TextMeshProUGUI>().text =
             this.time.ToString("F1");
+        this.pointText.GetComponent<TextMeshProUGUI>().text =
+            this.time.ToString() + "point";
     }
 }
