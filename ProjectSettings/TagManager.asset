@@ -10,6 +10,8 @@ TagManager:
   - Bucket
   - CaughtFish
   - ShootItem
+  - potato
+  - ext
   layers:
   - Default
   - TransparentFX
