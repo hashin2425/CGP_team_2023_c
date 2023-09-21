@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TitleScreen : MonoBehaviour
+public class homekingyosukui : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("MainGameScene"); // メインゲームシーンに切り替える
+        SceneManager.LoadScene("kingyosukuiScene"); // メインゲームシーンに切り替える
     }
 }
