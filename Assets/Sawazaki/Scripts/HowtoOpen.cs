@@ -16,10 +16,10 @@ public class HowtoOpen : MonoBehaviour
     {
         
     }
-    public void OpenPanel()
-    {
-        // シーン遷移
-        Debug.Log("click");
+    private void OnMouseEnter() {
         panel.SetActive(true);
+    }
+    private void OnMouseExit() {       
+        panel.SetActive(false);
     }
 }
