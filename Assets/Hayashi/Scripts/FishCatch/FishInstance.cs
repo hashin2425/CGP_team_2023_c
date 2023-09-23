@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using static UnityEngine.GraphicsBuffer;
-using UnityEditorInternal;
 using TMPro;
 
 public class FishInstance : MonoBehaviour
