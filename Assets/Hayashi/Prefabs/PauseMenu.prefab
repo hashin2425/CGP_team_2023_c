@@ -715,7 +715,19 @@ MonoBehaviour:
   m_Value: 0.516
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7616511977665404140}
+        m_TargetAssemblyTypeName: PauseMenuScript, Assembly-CSharp
+        m_MethodName: OnSettingsChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1772543932325101176
 GameObject:
   m_ObjectHideFlags: 0
@@ -2416,7 +2428,19 @@ MonoBehaviour:
   m_Value: 0.516
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7616511977665404140}
+        m_TargetAssemblyTypeName: PauseMenuScript, Assembly-CSharp
+        m_MethodName: OnSettingsChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7602558994767308504
 GameObject:
   m_ObjectHideFlags: 0
@@ -2666,6 +2690,9 @@ MonoBehaviour:
   noticeBar: {fileID: 8361333587735454723}
   menuBox: {fileID: 6565676619496737254}
   canMouseBeClicked: 1
+  seVoumeSlider: {fileID: 6694689547701096079}
+  bgmVolumeSlider: {fileID: 292623479982026047}
+  volumeManager: {fileID: 0}
 --- !u!1 &8731533058949096073
 GameObject:
   m_ObjectHideFlags: 0
