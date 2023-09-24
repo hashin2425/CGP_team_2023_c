@@ -9,7 +9,7 @@ public class ShootingItem : MonoBehaviour
     public bool isThrown = true;
     public GameObject destroyParticle;
     public int currentPoint;
-
+    public AudioClip seThrown;
 
     private float thrownSpeed = 7.5f;
     private float slideSpeed = 7.5f;

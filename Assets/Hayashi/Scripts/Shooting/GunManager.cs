@@ -14,16 +14,32 @@ public class GunManager : MonoBehaviour
     public float rotateAdjustmentDegree = 180f; // if gun image is needed to be rotated, set this value to 90f
     public float shootInterval = 0.5f;
     public TextMeshProUGUI bulletLeftText;
+    public Animator bulletLeftAnimator;
     public TextMeshProUGUI pointText;
+    public Animator pointAnimator;
     public TimeManagement timeManagement;
+    public AudioClip seShoot;
+    public AudioClip seReload;
+    public AudioClip seHitNormal;
+    public AudioClip seHitHigh;
+    public AudioClip seHitSpecial;
+    public PauseMenuScript PauseMenuScript;
 
+    private AudioSource audioSource;
     private float passedTimeLastShoot = 0;
     private int playerScore = 0;
     private CircleCollider2D reticleCollider;
+    private bool getIsMouseClicked()
+    {
+        bool result = Input.GetMouseButton(0) && PauseMenuScript.canMouseBeClicked;
+        return result;
+    }
 
     void Start()
     {
         reticleCollider = Reticle.GetComponent<CircleCollider2D>();
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.volume = 0.075f;
     }
 
     void FixedUpdate()
@@ -53,9 +69,12 @@ public class GunManager : MonoBehaviour
 
         // shoot bullet
         passedTimeLastShoot += Time.deltaTime;
-        bool canShoot = Input.GetMouseButton(0) && passedTimeLastShoot > shootInterval && bulletCount > 0;
+        bool canShoot = getIsMouseClicked() && passedTimeLastShoot > shootInterval && bulletCount > 0;
         if (canShoot)
         {
+            audioSource.PlayOneShot(seShoot, 0.5f);
+            audioSource.clip = seReload;
+            audioSource.PlayDelayed(shootInterval * 1.2f);
             Collider2D[] colliders = Physics2D.OverlapCircleAll(reticlePos, reticleCollider.radius);
             foreach (var collider in colliders)
             {
@@ -65,10 +84,15 @@ public class GunManager : MonoBehaviour
                     if (collider.gameObject.transform.parent.tag == "ShootItem")
                     {
                         ShootingItem shootingItem = collider.gameObject.transform.parent.GetComponent<ShootingItem>();
+                        audioSource.PlayOneShot(seHitNormal, 0.5f);
                         if (shootingItem != null)
                         {
-                            shootingItem.destroyMySelf();
                             playerScore += shootingItem.currentPoint;
+                            if (shootingItem.currentPoint > 2)
+                            {
+                                audioSource.PlayOneShot(seHitHigh, 0.5f);
+                            }
+                            shootingItem.destroyMySelf();
                         }
                     }
                 }
@@ -80,9 +104,23 @@ public class GunManager : MonoBehaviour
             passedTimeLastShoot = 0;
             bulletCount--;
         }
+        else if (bulletCount < 1)
+        {
+            timeManagement.isGameEnd = true;
+        }
 
         // update UI
-        pointText.text = playerScore.ToString();
-        bulletLeftText.text = bulletCount.ToString();
+        string newPlayerScore = playerScore.ToString();
+        if (pointText.text != newPlayerScore)
+        {
+            pointText.text = newPlayerScore;
+            pointAnimator.Play("TextOnChanged", 0, 0);
+        }
+        string newBulletCount = bulletCount.ToString();
+        if (bulletLeftText.text != newBulletCount)
+        {
+            bulletLeftText.text = newBulletCount;
+            // bulletLeftAnimator.Play("TextOnChanged", 0, 0);
+        }
     }
 }
