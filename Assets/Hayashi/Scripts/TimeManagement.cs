@@ -15,55 +15,102 @@ public class TimeManagement : MonoBehaviour
     public Transform popupObjectTransform;
     public bool isGameEnd;
     public AudioClip seGameEnd;
+    public RectTransform[] valueDisplays;
+    public GameObject buttonHolder;
 
-    private bool isPlayedGameEndSE = false;
     private float ObjectGoalY = 0;
     private float whiteObjectSpeed = 16f;
     private float popupObjectSpeed = 8f;
-    // private float slowDownFactor = 0.005f;
+    private float valueDisplaySpeed = 0.5f;
+    private float valueDisplayHeight = 130f;
+    private float intervalSec = 0;
+    private enum GameEndState
+    {
+        playSound,
+        appendStopText,
+        stayIntervalBeforeScoreResult,
+        moveStopTextAndValueDisplay,
+        stayIntervalBeforeButtonAppend,
+        appendButtons
+    }
+    private GameEndState nowGameState = GameEndState.playSound;
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        if (!isGameEnd && timeLeft >= 0)
+        bool isGameContinue = !isGameEnd && timeLeft >= 0;
+        if (isGameContinue)
         {
             timeLeft -= Time.deltaTime;
             timerText.text = timeLeft.ToString("F1");
         }
         else
         {
-            if (!isPlayedGameEndSE)
+            switch (nowGameState)
             {
-                gameObject.GetComponent<AudioSource>().PlayOneShot(seGameEnd, 0.4f);
-                isPlayedGameEndSE = true;
-            }
-            if (whiteObjectTransform.position.y <= ObjectGoalY)
-            {
-                whiteObjectRigidbody.velocity = Vector3.zero;
-            }
-            else
-            {
-                Vector3 whiteObjectVec = Vector3.zero;
-                whiteObjectVec.y = (ObjectGoalY - whiteObjectTransform.position.y) * whiteObjectSpeed + 0.1f;
-                whiteObjectVec.z = -9.0f;
-                whiteObjectRigidbody.velocity = whiteObjectVec;
-            }
-            if (popupObjectTransform.position.y <= ObjectGoalY)
-            {
-                popupObjectRigidbody.velocity = Vector3.zero;
-                /*
-                CatcherScript script = catcher.GetComponent<CatcherScript>();
-                script.isGameEnded = true;
-                catcher.SetActive(false);
-                Destroy(catcher );*/
-                Console.WriteLine("game ended");
-            }
-            else
-            {
-                Vector3 popupObjectVec = Vector3.zero;
-                popupObjectVec.y = (ObjectGoalY - popupObjectTransform.position.y) * popupObjectSpeed + 0.1f;
-                popupObjectVec.z = -9.5f;
-                popupObjectRigidbody.velocity = popupObjectVec;
+                case GameEndState.playSound:
+                    gameObject.GetComponent<AudioSource>().PlayOneShot(seGameEnd, 0.4f);
+                    nowGameState = GameEndState.appendStopText;
+                    ObjectGoalY = 0;
+                    break;
+
+                case GameEndState.appendStopText:
+                    if (popupObjectTransform.position.y < ObjectGoalY)
+                    {
+                        nowGameState = GameEndState.stayIntervalBeforeScoreResult;
+                        ObjectGoalY = 2.5f;
+                        intervalSec = 1f;
+                    }
+                    whiteObjectTransform.position = Vector3.Lerp(whiteObjectTransform.position, new Vector3(0, -0.2f, -9.0f), Time.fixedDeltaTime * whiteObjectSpeed);
+                    popupObjectTransform.position = Vector3.Lerp(popupObjectTransform.position, new Vector3(0, -0.1f, -9.0f), Time.fixedDeltaTime * popupObjectSpeed);
+                    break;
+
+                case GameEndState.stayIntervalBeforeScoreResult:
+                    intervalSec -= Time.deltaTime;
+                    if (intervalSec < 0)
+                    {
+                        nowGameState = GameEndState.moveStopTextAndValueDisplay;
+                    }
+                    break;
+
+                case GameEndState.moveStopTextAndValueDisplay:
+                    popupObjectTransform.position = Vector3.Lerp(popupObjectTransform.position, new Vector3(popupObjectTransform.position.x, ObjectGoalY, popupObjectTransform.position.z), Time.fixedDeltaTime * popupObjectSpeed);
+                    bool isMovementEnd = true;
+                    for (int i = 0; i < valueDisplays.Length; i++)
+                    {
+                        float newX = (0 - valueDisplays[i].localPosition.x) * valueDisplaySpeed / Time.fixedDeltaTime;
+                        float newY = (valueDisplayHeight * -i - valueDisplays[i].localPosition.y) * valueDisplaySpeed / Time.fixedDeltaTime;
+                        valueDisplays[i].localPosition = Vector3.Lerp(valueDisplays[i].localPosition, new Vector3(newX, newY, valueDisplays[i].localPosition.z), Time.fixedDeltaTime * valueDisplaySpeed / (i + 1)); //new Vector3(newX, newY, valueDisplays[i].localPosition.z);
+                        if (Vector3.Distance(valueDisplays[i].localPosition, new Vector3(newX, newY, valueDisplays[i].localPosition.z)) < 0.1f)
+                        {
+                            isMovementEnd = isMovementEnd && true;
+                        }
+                        else
+                        {
+                            isMovementEnd = false;
+                        }
+                    }
+                    if (isMovementEnd)
+                    {
+                        nowGameState = GameEndState.stayIntervalBeforeButtonAppend;
+                        intervalSec = 0.25f;
+                    }
+
+                    break;
+
+                case GameEndState.stayIntervalBeforeButtonAppend:
+                    intervalSec -= Time.deltaTime;
+                    if (intervalSec < 0)
+                    {
+                        nowGameState = GameEndState.appendButtons;
+                    }
+                    break;
+
+                case GameEndState.appendButtons:
+                    buttonHolder.SetActive(true);
+                    Vector3 newPosition = buttonHolder.transform.localPosition;
+                    newPosition.y = valueDisplayHeight * -valueDisplays.Length + 1;
+                    buttonHolder.transform.localPosition = Vector3.Lerp(buttonHolder.transform.localPosition, newPosition, Time.fixedDeltaTime * popupObjectSpeed);
+                    break;
             }
         }
     }

@@ -19,6 +19,7 @@ public class PauseMenuScript : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;
         noticeBarTransform = noticeBar.transform;
         noticeBarCollider = noticeBar.GetComponent<BoxCollider2D>();
     }
@@ -34,6 +35,7 @@ public class PauseMenuScript : MonoBehaviour
         {
             menuBox.SetActive(true);
             isNowMenuDisplayed = true;
+            Time.timeScale = 0;
         }
         else if (isNowMouseEntered && !isNowMenuDisplayed)
         {
@@ -63,6 +65,6 @@ public class PauseMenuScript : MonoBehaviour
     {
         menuBox.SetActive(false);
         isNowMenuDisplayed = false;
-
+        Time.timeScale = 1;
     }
 }
