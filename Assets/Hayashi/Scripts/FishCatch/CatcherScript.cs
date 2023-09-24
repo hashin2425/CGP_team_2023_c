@@ -81,7 +81,7 @@ public class CatcherScript : MonoBehaviour
             // on mouse click
             if (!isBeforeCatcherInWater)
             {
-                audioSource.PlayOneShot(seIntoWater, 0.5f);
+                audioSource.PlayOneShot(seIntoWater);
             }
             worldPos.z = 2.0f;
 
@@ -131,7 +131,7 @@ public class CatcherScript : MonoBehaviour
                     destroyParticle.SetActive(false);
                     destroyParticle.SetActive(true);
                     isTotallyTorn = true;
-                    audioSource.PlayOneShot(seBrokenPartly, 1.5f);
+                    audioSource.PlayOneShot(seBrokenPartly);
 
                     // set all fish released
                     foreach (GameObject obj in objects)
@@ -144,7 +144,7 @@ public class CatcherScript : MonoBehaviour
                 {
                     isPartiallyTorn = true;
                     HPBar.value = 0;
-                    audioSource.PlayOneShot(seBrokenCritically, 1.5f);
+                    audioSource.PlayOneShot(seBrokenCritically);
                 }
             }
             else if (HPBar.value >= HPBar.maxValue * 0.4f)
@@ -180,7 +180,7 @@ public class CatcherScript : MonoBehaviour
             worldPos.z = -1.0f;
             if (isBeforeCatcherInWater)
             {
-                audioSource.PlayOneShot(seOutWater, 0.5f);
+                audioSource.PlayOneShot(seOutWater);
             }
 
             GameObject[] objects = GameObject.FindGameObjectsWithTag("Fish");

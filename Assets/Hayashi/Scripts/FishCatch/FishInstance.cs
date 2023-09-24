@@ -68,7 +68,7 @@ public class FishInstance : MonoBehaviour
             isCaughtInBucket = true;
             isCaughtByCatcher = false;
 
-            gameObject.GetComponent<AudioSource>().PlayOneShot(seIntoBucket, 0.5f);
+            gameObject.GetComponent<AudioSource>().PlayOneShot(seIntoBucket);
 
             // disable collider to improve performance
             gameObject.GetComponent<Collider2D>().enabled = false;

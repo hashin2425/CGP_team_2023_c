@@ -9,7 +9,7 @@ public class PauseMenuScript : MonoBehaviour
     public GameObject noticeBar;
     public GameObject menuBox;
     public bool canMouseBeClicked = true;
-    public Slider seVoumeSlider;
+    public Slider seVolumeSlider;
     public Slider bgmVolumeSlider;
     public AudioVolumeManager volumeManager;
 
@@ -25,11 +25,18 @@ public class PauseMenuScript : MonoBehaviour
 
     void Start()
     {
+        if (PlayerPrefs.HasKey(seVolumeKey))
+        {
+            seVolumeSlider.value = PlayerPrefs.GetFloat(seVolumeKey);
+        }
+        if (PlayerPrefs.HasKey(bgmVolumeKey))
+        {
+            bgmVolumeSlider.value = PlayerPrefs.GetFloat(bgmVolumeKey);
+        }
+
         Time.timeScale = 1;
         noticeBarTransform = noticeBar.transform;
         noticeBarCollider = noticeBar.GetComponent<BoxCollider2D>();
-        
-        OnSettingsChanged();
     }
 
     void FixedUpdate()
@@ -62,11 +69,13 @@ public class PauseMenuScript : MonoBehaviour
     {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(sceneIndex);
+        OnSettingsChanged();
     }
 
     public void OnTitleButtonClicked()
     {
-
+        SceneManager.LoadScene("Menu");
+        OnSettingsChanged();
     }
 
     public void OnCloseButtonClicked()
@@ -74,13 +83,17 @@ public class PauseMenuScript : MonoBehaviour
         menuBox.SetActive(false);
         isNowMenuDisplayed = false;
         Time.timeScale = 1;
+
+        OnSettingsChanged();
     }
 
     public void OnSettingsChanged()
     {
-        PlayerPrefs.SetFloat(seVolumeKey, seVoumeSlider.value);
+        PlayerPrefs.SetFloat(seVolumeKey, seVolumeSlider.value);
         PlayerPrefs.SetFloat(bgmVolumeKey, bgmVolumeSlider.value);
         PlayerPrefs.Save();
+
+        Debug.Log(PlayerPrefs.GetFloat(bgmVolumeKey));
 
         volumeManager.updateAudioVolumes();
     }

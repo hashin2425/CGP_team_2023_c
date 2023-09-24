@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 public class TimeManagement : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class TimeManagement : MonoBehaviour
             switch (nowGameState)
             {
                 case GameEndState.playSound:
-                    gameObject.GetComponent<AudioSource>().PlayOneShot(seGameEnd, 0.4f);
+                    gameObject.GetComponent<AudioSource>().PlayOneShot(seGameEnd);
                     nowGameState = GameEndState.appendStopText;
                     ObjectGoalY = 0;
                     break;
@@ -113,5 +114,16 @@ public class TimeManagement : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void OnRestartButtonClicked()
+    {
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(sceneIndex);
+    }
+
+    public void OnTitleButtonClicked()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }

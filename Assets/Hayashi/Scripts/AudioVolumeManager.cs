@@ -10,18 +10,20 @@ public class AudioVolumeManager : MonoBehaviour
     private string bgmVolumeKey = "bgmVolume";
     private float seVolume;
     private float bgmVolume;
+    private const float seVolumeRate = 1.00f;
+    private const float bgmVolumeRate = 0.10f;
 
     public void updateAudioVolumes()
     {
         // BGM
-        bgmVolume = PlayerPrefs.GetFloat(bgmVolumeKey);
+        bgmVolume = PlayerPrefs.GetFloat(bgmVolumeKey) * bgmVolumeRate;
         gameObject.GetComponent<AudioSource>().volume = bgmVolume;
 
         // SE
-        seVolume = PlayerPrefs.GetFloat(seVolumeKey);
+        seVolume = PlayerPrefs.GetFloat(seVolumeKey) * seVolumeRate;
         foreach (AudioSource source in managedAudioSources)
         {
-            source.volume = bgmVolume;
+            source.volume = seVolume;
         }
     }
 

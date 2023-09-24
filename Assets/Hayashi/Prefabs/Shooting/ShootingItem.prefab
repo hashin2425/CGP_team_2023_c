@@ -57,9 +57,6 @@ MonoBehaviour:
   destroyParticle: {fileID: 3015322549281023434, guid: 1174f02e1559b614eadf59463dd7e1f1, type: 3}
   currentPoint: 0
   seThrown: {fileID: 8300000, guid: 01fc381051c216448b3f3620404b9a00, type: 3}
-  seHitNormal: {fileID: 8300000, guid: 6f1821f772bf3704abd20b5818e1e9c2, type: 3}
-  seHitHigh: {fileID: 8300000, guid: 1c16efbc8a631504d9661e0e8078706d, type: 3}
-  seHitSpecial: {fileID: 8300000, guid: 8d4054fe21b6ba440b5016565888dcc5, type: 3}
 --- !u!50 &8051573955718496417
 Rigidbody2D:
   serializedVersion: 4
@@ -151,7 +148,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 01fc381051c216448b3f3620404b9a00, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.516
   m_Pitch: 1
   Loop: 0
   Mute: 0

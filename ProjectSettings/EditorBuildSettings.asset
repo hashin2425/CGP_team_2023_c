@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Hayashi/Scenes/MiniGameFishCatch.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
     path: Assets/Sawazaki/Scenes/Menu.unity
     guid: 18e039966efc3ab47bb351111d12a408
   - enabled: 1
-    path: Assets/Sawazaki/Scenes/GoldfishNumber.unity
-    guid: dbcd07abffa62ed49893f52e46c08150
+    path: Assets/Hayashi/Scenes/MiniGameFishCatch.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Hayashi/Scenes/MiniGameShooting.unity
+    guid: 6464cf0454189d44b9be7049b240c22d
   m_configObjects: {}

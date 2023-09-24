@@ -72,7 +72,7 @@ public class GunManager : MonoBehaviour
         bool canShoot = getIsMouseClicked() && passedTimeLastShoot > shootInterval && bulletCount > 0;
         if (canShoot)
         {
-            audioSource.PlayOneShot(seShoot, 0.5f);
+            audioSource.PlayOneShot(seShoot);
             audioSource.clip = seReload;
             audioSource.PlayDelayed(shootInterval * 1.2f);
             Collider2D[] colliders = Physics2D.OverlapCircleAll(reticlePos, reticleCollider.radius);
@@ -84,13 +84,13 @@ public class GunManager : MonoBehaviour
                     if (collider.gameObject.transform.parent.tag == "ShootItem")
                     {
                         ShootingItem shootingItem = collider.gameObject.transform.parent.GetComponent<ShootingItem>();
-                        audioSource.PlayOneShot(seHitNormal, 0.5f);
+                        audioSource.PlayOneShot(seHitNormal);
                         if (shootingItem != null)
                         {
                             playerScore += shootingItem.currentPoint;
                             if (shootingItem.currentPoint > 2)
                             {
-                                audioSource.PlayOneShot(seHitHigh, 0.5f);
+                                audioSource.PlayOneShot(seHitHigh);
                             }
                             shootingItem.destroyMySelf();
                         }
