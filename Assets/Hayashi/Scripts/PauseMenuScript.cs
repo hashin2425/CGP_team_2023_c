@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenuScript : MonoBehaviour
 {
     public GameObject noticeBar;
     public GameObject menuBox;
     public bool canMouseBeClicked = true;
+    public Slider seVoumeSlider;
+    public Slider bgmVolumeSlider;
+    public AudioVolumeManager volumeManager;
 
     private float moveSpeed = 0.2f;
     private Transform noticeBarTransform;
@@ -16,12 +20,16 @@ public class PauseMenuScript : MonoBehaviour
     private bool isNowMenuDisplayed;
     private float targetXStart = 1170;
     private float targetYEnd = 685;
+    private string seVolumeKey = "seVolume";
+    private string bgmVolumeKey = "bgmVolume";
 
     void Start()
     {
         Time.timeScale = 1;
         noticeBarTransform = noticeBar.transform;
         noticeBarCollider = noticeBar.GetComponent<BoxCollider2D>();
+        
+        OnSettingsChanged();
     }
 
     void FixedUpdate()
@@ -66,5 +74,14 @@ public class PauseMenuScript : MonoBehaviour
         menuBox.SetActive(false);
         isNowMenuDisplayed = false;
         Time.timeScale = 1;
+    }
+
+    public void OnSettingsChanged()
+    {
+        PlayerPrefs.SetFloat(seVolumeKey, seVoumeSlider.value);
+        PlayerPrefs.SetFloat(bgmVolumeKey, bgmVolumeSlider.value);
+        PlayerPrefs.Save();
+
+        volumeManager.updateAudioVolumes();
     }
 }
