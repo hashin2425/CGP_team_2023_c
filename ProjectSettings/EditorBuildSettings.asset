@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Hayashi/Scenes/MiniGameShooting.unity
     guid: 6464cf0454189d44b9be7049b240c22d
+  - enabled: 1
+    path: Assets/Morita/Scenes/MiniGamePotato.unity
+    guid: 108939fe6461b4f409e5ddb01034aa56
   m_configObjects: {}

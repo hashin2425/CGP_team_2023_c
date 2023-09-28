@@ -36,7 +36,9 @@ public class CatcherScript : MonoBehaviour
     private bool isPartiallyTorn = false;
     private bool isTotallyTorn = false;
     private bool isBeforeCatcherInWater = false;
+    private float catcherStrength = 2000;
     private float catcherReloadIntervalRemainTime = 0;
+    private int howManyFishOnCatcher = 0;
 
     private bool getIsMouseClicked()
     {
@@ -101,6 +103,7 @@ public class CatcherScript : MonoBehaviour
             {
                 FishInstance script = obj.GetComponent<FishInstance>();
                 script.OnCatcherIntoWater();
+                howManyFishOnCatcher = 0;
             }
 
             // move
@@ -117,7 +120,7 @@ public class CatcherScript : MonoBehaviour
             HPBar.transform.position = Camera.main.WorldToScreenPoint(HPBarPos);
             if (acceleration > 1)
             {
-                HPBar.value += Mathf.Clamp01(acceleration / 3000);
+                HPBar.value += Mathf.Clamp01(acceleration / catcherStrength);
             }
             HPBar.value -= 0.0005f / Time.deltaTime;
             if (HPBar.value >= HPBar.maxValue * 0.7f)
@@ -125,6 +128,7 @@ public class CatcherScript : MonoBehaviour
                 fillImage.color = Color.red;
                 if (isPartiallyTorn)
                 {
+                    // 「部分的に破れた」の処理
                     gameObject.tag = "Catcher";
 
                     spriteRenderer.sprite = catcherAllBroken;
@@ -138,13 +142,23 @@ public class CatcherScript : MonoBehaviour
                     {
                         FishInstance script = obj.GetComponent<FishInstance>();
                         script.OnCatcherIntoWater();
+                        howManyFishOnCatcher = 0;
                     }
                 }
                 else
                 {
+                    // 「完全に破れた」の処理
                     isPartiallyTorn = true;
                     HPBar.value = 0;
                     audioSource.PlayOneShot(seBrokenCritically);
+
+                    // set all fish released
+                    foreach (GameObject obj in objects)
+                    {
+                        FishInstance script = obj.GetComponent<FishInstance>();
+                        script.OnCatcherIntoWater();
+                        howManyFishOnCatcher = 0;
+                    }
                 }
             }
             else if (HPBar.value >= HPBar.maxValue * 0.4f)
@@ -189,7 +203,25 @@ public class CatcherScript : MonoBehaviour
                 foreach (GameObject obj in objects)
                 {
                     FishInstance script = obj.GetComponent<FishInstance>();
-                    script.OnCatcherLiftedOutWater();
+                    howManyFishOnCatcher += script.OnCatcherLiftedOutWater(acceleration);
+                }
+
+                if (howManyFishOnCatcher >= 3)
+                {
+                    // ポイに金魚を載せすぎると破れる
+
+                    // 「完全に破れた」の処理
+                    isPartiallyTorn = true;
+                    HPBar.value = 0;
+                    audioSource.PlayOneShot(seBrokenCritically);
+
+                    // set all fish released
+                    foreach (GameObject obj in objects)
+                    {
+                        FishInstance script = obj.GetComponent<FishInstance>();
+                        script.OnCatcherIntoWater();
+                        howManyFishOnCatcher = 0;
+                    }
                 }
             }
 

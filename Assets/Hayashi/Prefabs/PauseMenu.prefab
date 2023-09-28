@@ -2690,7 +2690,7 @@ MonoBehaviour:
   noticeBar: {fileID: 8361333587735454723}
   menuBox: {fileID: 6565676619496737254}
   canMouseBeClicked: 1
-  seVoumeSlider: {fileID: 6694689547701096079}
+  seVolumeSlider: {fileID: 6694689547701096079}
   bgmVolumeSlider: {fileID: 292623479982026047}
   volumeManager: {fileID: 0}
 --- !u!1 &8731533058949096073

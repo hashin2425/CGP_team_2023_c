@@ -13,6 +13,7 @@ public class Spawner : MonoBehaviour
     public float spawnIntervalSec = 0;
     public int randomRotateRange = 0;
 
+    private float rotationSpeed = 0;
     private Transform[] spawnPoints;
     private float spawnIntervalRemainSec = 0;
     private System.Random random = new System.Random();
@@ -28,6 +29,7 @@ public class Spawner : MonoBehaviour
             }
         }
         spawnPoints = spawnPointsList.ToArray();
+        rotationSpeed = random.Next(-randomRotateRange, randomRotateRange);
     }
 
     void FixedUpdate()

@@ -6,7 +6,6 @@ public class TitleZoom : MonoBehaviour
 {
     public Transform titleLogoTransform;
     public Transform lanternTransform;
-    public GameObject navigateText;
 
     Transform tf; //Main CameraのTransform
     Camera cam; //Main CameraのCamera
@@ -57,7 +56,7 @@ public class TitleZoom : MonoBehaviour
                 cam.orthographicSize = Mathf.Lerp(initialOrthographicSize, initialOrthographicSize + cameraZoomDifference, t);
                 tf.position = Vector3.Lerp(initialCameraPosition, initialCameraPosition + new Vector3(0.0f, -cameraYDifference, 0.0f), t);
                 titleLogoTransform.position = Vector3.Lerp(initialTitleLogoPosition, initialTitleLogoPosition + new Vector3(0.0f, -titleLogoYDifference, 0.0f), t);
-                lanternTransform.position = Vector3.Lerp(initialLanternPosition, initialLanternPosition + new Vector3(0.0f, - lanternYDifference, 0.0f), t);
+                lanternTransform.position = Vector3.Lerp(initialLanternPosition, initialLanternPosition + new Vector3(0.0f, -lanternYDifference, 0.0f), t);
             }
             else
             {
@@ -71,10 +70,10 @@ public class TitleZoom : MonoBehaviour
             }
         }
 
+        if(Input.GetMouseButton(0)) { Debug.Log("pushed"); }
+
         if (!flag && Input.GetMouseButton(0))
         {
-            navigateText.SetActive(false);
-
             isZoomingOut = true;
             zoomTimer = 0.0f;
             //cam.orthographicSize = cam.orthographicSize + cameraZoomDifference;

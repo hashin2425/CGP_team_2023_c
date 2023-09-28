@@ -11,7 +11,7 @@ public class AudioVolumeManager : MonoBehaviour
     private float seVolume;
     private float bgmVolume;
     private const float seVolumeRate = 1.00f;
-    private const float bgmVolumeRate = 0.10f;
+    private const float bgmVolumeRate = 0.50f;
 
     public void updateAudioVolumes()
     {

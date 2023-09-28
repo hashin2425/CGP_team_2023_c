@@ -41,13 +41,16 @@ public class FishInstance : MonoBehaviour
         return true;
     }
 
-    public void OnCatcherLiftedOutWater()
+    public int OnCatcherLiftedOutWater(float catcherMoveSpeed)
     {
-        if (isExistOnCatcher)
+        Debug.Log(catcherMoveSpeed);
+        if (isExistOnCatcher && catcherMoveSpeed > 0.0005f) // ƒ|ƒC‚ª“®‚¢‚Ä‚¢‚È‚¯‚ê‚Î‹à‹›‚ðŽæ‚ê‚È‚¢‚æ‚¤‚É‚µ‚Ä‚¢‚é
         {
             isCaughtByCatcher = true;
             gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.5f);
+            return 1;
         }
+        return 0;
     }
 
     public void OnCatcherIntoWater()
@@ -126,6 +129,10 @@ public class FishInstance : MonoBehaviour
             if (!is_in_frame())
             {
                 Destroy(gameObject);
+            }
+            if(movingStatus == "swim_straight")
+            {
+                rb.velocity = transform.forward * 10f;
             }
             if (movingStatus == "wait")
             {

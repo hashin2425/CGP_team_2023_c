@@ -2,98 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class baketsucontroller : MonoBehaviour
 {
 
-    // Start is called before the first frame update
-    public TextMeshProUGUI potatoScore;
-    [SerializeField]
-    float SPEED = 1.0f;
-    private Rigidbody2D rigidBody;
-    // Update is called once per frame
-    //Vector3 mousePos, worldPos;
+    public TextMeshProUGUI potatoScoreText;
+    public float SPEED = 1.0f;
+    public GameObject HowToControlPopUP;
+    public TimeManagement timeManagement;
+    public AudioClip seOnCatch;
 
-    private GameObject square;
-    private SpriteRenderer SpriteRenderer;
-    private int score; // スコa
+    private Rigidbody2D rigidBody;
+    private int potatoScore;
     private Vector2 inputAxis;
 
 
     void Start()
     {
-        // オブジェクトに設定しているRigidbody2Dの参照を取得する
-        this.rigidBody = GetComponent<Rigidbody2D>();
-        potatoScore.text = "potato: ";
+        rigidBody = GetComponent<Rigidbody2D>();
+        potatoScoreText.text = potatoScore.ToString();
     }
-    void Update()
+
+    void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (timeManagement.timeLeft >= 0)
         {
-            inputAxis.y = 1;
-
+            if (gameObject.transform.position.x < -8 || gameObject.transform.position.x > 8)
+            {
+                inputAxis.x = 0;
+                gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            if (Input.GetKey(KeyCode.RightArrow) && gameObject.transform.position.x < 8)
+            {
+                HowToControlPopUP.SetActive(false);
+                inputAxis.x = 1;
+                gameObject.transform.rotation = Quaternion.Euler(0, 0, -10);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow) && gameObject.transform.position.x > -8)
+            {
+                HowToControlPopUP.SetActive(false);
+                inputAxis.x = -1;
+                gameObject.transform.rotation = Quaternion.Euler(0, 0, 10);
+            }
+            rigidBody.velocity = inputAxis.normalized * SPEED;
         }
-        else if (Input.GetKey(KeyCode.S))
+        else
         {
-            inputAxis.y = -1;
-
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
-       
-        if (gameObject.transform.position.x < -8 || gameObject.transform.position.x > 8)
-        {
-            inputAxis.x = 0;
-        }
-        if (Input.GetKey(KeyCode.D)&& gameObject.transform.position.x <8)
-        {
-            inputAxis.x = 1;
-
-        }
-        else if (Input.GetKey(KeyCode.A)&& gameObject.transform.position.x>-8)
-        {
-            inputAxis.x = -1;
-
-        }
-        
-
-
-        //float Score = GameObject.FindGameObjectsWithTag("potato").Length;
-        //potatoScore.text = Score.ToString();
-
-        //マウス座標の取得
-        // mousePos = Input.mousePosition;
-        //スクリーン座標をワールド座標に変換
-        //worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 10f));
-        //ワールド座標を自身の座標に設定
-        // transform.position = worldPos;
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        // ぶつかったオブジェクトが収集アイテムだった場合
         if (other.gameObject.CompareTag("potato"))
         {
-            // その収集アイテムを非表示にします
-            other.gameObject.SetActive(false);
-
-            // スコアを加算します
-            score = score + 1;
-
-            // UI の表示を更新します
-            SetCountText();
+            gameObject.GetComponent<AudioSource>().PlayOneShot(seOnCatch);
+            other.gameObject.GetComponent<erasepotato>().OnCaught();
+            potatoScore++;
+            potatoScoreText.text = potatoScore.ToString();
         }
     }
-    void SetCountText()
-    {
-        // スコアの表示を更新
-        potatoScore.text = "potato: " + score.ToString();
-    }
-    private void FixedUpdate()
-    {
-        // 速度を代入する
-
-        rigidBody.velocity = inputAxis.normalized * SPEED;
-        Vector3 newPosition = new Vector3(8, -4, 0);
-        //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPosition, Time.fixedDeltaTime * 0.5f);
-    }
 }
-   
-

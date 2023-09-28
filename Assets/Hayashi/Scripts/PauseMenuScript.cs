@@ -13,6 +13,7 @@ public class PauseMenuScript : MonoBehaviour
     public Slider bgmVolumeSlider;
     public AudioVolumeManager volumeManager;
 
+    private bool isSoundInitialized = false;
     private float moveSpeed = 0.2f;
     private Transform noticeBarTransform;
     private BoxCollider2D noticeBarCollider;
@@ -25,15 +26,9 @@ public class PauseMenuScript : MonoBehaviour
 
     void Start()
     {
-        if (PlayerPrefs.HasKey(seVolumeKey))
-        {
-            seVolumeSlider.value = PlayerPrefs.GetFloat(seVolumeKey);
-        }
-        if (PlayerPrefs.HasKey(bgmVolumeKey))
-        {
-            bgmVolumeSlider.value = PlayerPrefs.GetFloat(bgmVolumeKey);
-        }
-
+        bgmVolumeSlider.value = PlayerPrefs.GetFloat(bgmVolumeKey);
+        seVolumeSlider.value = PlayerPrefs.GetFloat(seVolumeKey);
+        isSoundInitialized = true;
         Time.timeScale = 1;
         noticeBarTransform = noticeBar.transform;
         noticeBarCollider = noticeBar.GetComponent<BoxCollider2D>();
@@ -89,12 +84,16 @@ public class PauseMenuScript : MonoBehaviour
 
     public void OnSettingsChanged()
     {
-        PlayerPrefs.SetFloat(seVolumeKey, seVolumeSlider.value);
-        PlayerPrefs.SetFloat(bgmVolumeKey, bgmVolumeSlider.value);
-        PlayerPrefs.Save();
+        Debug.Log("on setting changed");
+        if (isSoundInitialized)
+        {
+            PlayerPrefs.SetFloat(seVolumeKey, seVolumeSlider.value);
+            PlayerPrefs.SetFloat(bgmVolumeKey, bgmVolumeSlider.value);
+            PlayerPrefs.Save();
 
-        Debug.Log(PlayerPrefs.GetFloat(bgmVolumeKey));
+            Debug.Log(PlayerPrefs.GetFloat(bgmVolumeKey));
 
-        volumeManager.updateAudioVolumes();
+            volumeManager.updateAudioVolumes();
+        }
     }
 }
