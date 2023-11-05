@@ -635,6 +635,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1809796936402072825, guid: 4ace2b22ac43c0446b1d14ca6edca193, type: 3}
+      propertyPath: timeLeft
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1809796936402072825, guid: 4ace2b22ac43c0446b1d14ca6edca193, type: 3}
       propertyPath: timerText
       value: 
       objectReference: {fileID: 349400364}
@@ -1226,11 +1230,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2802227751407232233, guid: 3bcf1a849bed20c4bacab6ab4564f502, type: 3}
       propertyPath: maxObjectCount
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2802227751407232233, guid: 3bcf1a849bed20c4bacab6ab4564f502, type: 3}
       propertyPath: spawnIntervalSec
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2802227751407232233, guid: 3bcf1a849bed20c4bacab6ab4564f502, type: 3}
       propertyPath: randomRotateRange

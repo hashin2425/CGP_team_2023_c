@@ -24,20 +24,11 @@ public class baketsucontroller : MonoBehaviour
     {
         // オブジェクトに設定しているRigidbody2Dの参照を取得する
         this.rigidBody = GetComponent<Rigidbody2D>();
-        potatoScore.text = "potato: ";
+        potatoScore.text = "";
     }
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            inputAxis.y = 1;
-
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            inputAxis.y = -1;
-
-        }
+        
        
         if (gameObject.transform.position.x < -8 || gameObject.transform.position.x > 8)
         {
@@ -84,7 +75,7 @@ public class baketsucontroller : MonoBehaviour
     void SetCountText()
     {
         // スコアの表示を更新
-        potatoScore.text = "potato: " + score.ToString();
+        potatoScore.text = ""+ score.ToString();
     }
     private void FixedUpdate()
     {
